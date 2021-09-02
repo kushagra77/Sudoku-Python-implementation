@@ -36,7 +36,6 @@ class Grid():
         if point.fixed:
             # Point is solved
             self.values.append(point.value)
-            self.solved += 1
             return 1
         return 0
 
@@ -62,9 +61,9 @@ class Map():
     # Check if a Map contains value in row, column and grid
     def CrossCheck(self, value, row, column):
         for i in self.rows[row]:
-            if value == i.value():
+            if value == i.value:
                 return True
         for i in self.columns[column]:
-            if value == i.value():
+            if value == i.value:
                 return True
         return self.map[row // 3][column // 3].Contains(value)
