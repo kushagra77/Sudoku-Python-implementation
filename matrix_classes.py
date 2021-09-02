@@ -1,5 +1,5 @@
 class Point():
-
+	
     def __init__(self, value=0):
         # A point is fixed when it is solved
         if value == 0:   
