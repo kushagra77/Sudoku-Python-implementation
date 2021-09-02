@@ -56,7 +56,7 @@ class Map():
         self.map[row // 3][column // 3].Add(point, row % 3, column % 3)
     
     # Check if a Map contains value in row, column and grid
-    def CrossCheckl(self, value, row, column):
+    def CrossCheck(self, value, row, column):
         for i in self.rows[row]:
             if value == i.value():
                 return True
