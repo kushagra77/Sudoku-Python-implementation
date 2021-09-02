@@ -4,7 +4,7 @@ class Point():
         if not self.fixed:   
             self.values = {1,2,3,4,5,6,7,8,9}
         else:
-            self.values = {value}
+            self.values = {}
         self.value = value
 
     def Pop(self, value):
@@ -38,11 +38,11 @@ class Map():
         self.columns[column].append(point)
         self.map[row // 3][column // 3].Add(point, row % 3, column % 3)
     
-    def RowColumn(self, value, row, column):
+    def ToRemove(self, value, row, column):
         for i in self.rows[row]:
             if value == i.value():
-                return False
+                return True
         for i in self.columns[column]:
             if value == i.value():
-                return False
-        return True
+                return True
+        return self.map[row // 3][column // 3].Contains(value)
