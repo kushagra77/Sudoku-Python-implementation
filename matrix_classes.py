@@ -1,11 +1,13 @@
 class Point():
     def __init__(self, value=0):
-        if not given:   
-            self.values = {1,2,3,4,5,6,7,8,9}
         self.fixed = (value != 0)
+        if not self.fixed:   
+            self.values = {1,2,3,4,5,6,7,8,9}
+        else:
+            self.values = {value}
         self.value = value
 
-    def pop(self, value):
+    def Pop(self, value):
         if not self.fixed:
             self.values.discard(value)
             if len(self.values) == 1:
@@ -17,13 +19,30 @@ class Grid():
         self.map = [[{} for i in range(3)] for j in range(3)]
         self.values = []
 
-    def add(self, point, position):
-        outer = int(position / 3)
-        inner = position % 3
-        self.map[outer][inner] = point
+    def Add(self, point, row, column):
+        self.map[row][column] = point
         if point.fixed:
             self.values.append(point.value)
 
-    def contains(self, value):
+    def Contains(self, value):
         return value in self.values
             
+class Map():
+    def __init__(self):
+        self.map = [[Grid() for i in range(3)] for j in range(3)]
+        self.rows = [[] for i in range(9)]
+        self.columns = [[] for i in range(9)]
+    
+    def Add(self, point, row, column):
+        self.rows[row].append(point)
+        self.columns[column].append(point)
+        self.map[row // 3][column // 3].Add(point, row % 3, column % 3)
+    
+    def RowColumn(self, value, row, column):
+        for i in self.rows[row]:
+            if value == i.value():
+                return False
+        for i in self.columns[column]:
+            if value == i.value():
+                return False
+        return True
