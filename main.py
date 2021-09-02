@@ -13,25 +13,18 @@ def main():
 	for row in range(9):
 		for column in range(9):
 			my_map.Add(mc.Point(int(linelist[row][column])), row, column)
+
+
 	
 	while my_map.solved < 81:
-		for row in my_map.rows:
-			for point in row:
-				print(point.value, " ", end="")
-			print("")
-		print("")
-		print("")
-		print("--------------------")
-		print("")
-		print("")
 		for row in range(9):
 			for column in range(9):
 				point = my_map.rows[row][column]
 				if not point.fixed:
-					for value in range(9):
+					for value in range(1, 10):
 						if my_map.CrossCheck(value, row, column):
-							point.Pop(value)
-
+							my_map.solved += my_map.rows[row][column].Pop(value)
+	my_map.Print()
 	
 
 							

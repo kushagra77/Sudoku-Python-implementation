@@ -13,14 +13,15 @@ class Point():
 
     # ToDo: CHANGE POP TO REMOVE
     def Pop(self, value):
-        if not self.fixed:
-            # Remove value for values set
-            self.values.discard(value)
-            if len(self.values) == 1:
-                # There is only 1 value remaining
-                # This point is solved
-                self.value = self.values.pop()
-                self.fixed = True
+        # Remove value for values set
+        self.values.discard(value)
+        if len(self.values) == 1:
+            # There is only 1 value remaining
+            # This point is solved
+            self.value = self.values.pop()
+            self.fixed = True
+            return 1
+        return 0
 
 # Stores a 3x3 grid of Points
 class Grid():
@@ -67,3 +68,17 @@ class Map():
             if value == i.value:
                 return True
         return self.map[row // 3][column // 3].Contains(value)
+    
+    def Print(self):
+        print("-----------------------")
+        for i in range(9):
+            for j in range(9):
+                print(self.rows[i][j].value, end=" ")
+                if j % 3 == 2:
+                    print("|", end = " ")
+            print("")
+            if i % 3 == 2:
+                print("-----------------------")
+
+        
+        
