@@ -10,7 +10,7 @@ Grid check function
 
 ^^^ These required two separate types of checks, one to eliminate the possibility of a number in a position {CAN'T BE MORE THAN ONE INSTANCE}
 
-another exploiting the mandatory existence of every number in every row, column grid to push forced spots(most natural human strategy) {CAN"T BE LESS THAN ONE POSSIBILITY}
+another exploiting the mandatory existence of every number in every row, column grid to push forced spots(most natural human strategy) {CAN'T BE LESS THAN ONE POSSIBILITY}
 
 
 Recursion sweeps : Ended up using (double?) recursion with two functions mainloop and guess recursing through each other
