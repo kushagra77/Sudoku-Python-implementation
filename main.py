@@ -25,10 +25,11 @@ def mainloop(my_map, recursed=False):
 	
 	# Keeps track of how many times the main loop has been recursed through
 	count = 0
-
+	# To check if to guess
+	change = True
 	# Main loop, ends only when every position is solved, returns a boolean
 	while my_map.solved < 81:
-
+		
 		# Only returns 0 if current map violates a rule
 		# The map won't ever violate a rule unless it is going through a guess check (recursed map)
 		if recursed and my_map.Lost():
@@ -41,16 +42,11 @@ def mainloop(my_map, recursed=False):
 		# After every 4 iterations of the main loop, if unsolved, this initiates a guesscheck
 		# The 4 can be changed to something higher or lower to improve efficiency
 		# the ideal number (trial and error and line 48) has not been figured out yet
-		if (count % 3) == 0:
-
-			# Initiate a guess check only if it is not already in a guessing check
-			if not recursed:
+		if not change:
+			if recursed:
 				if guess(my_map):
 					break
-			else:
-				# This means that the guess was correct, 4 iterations has been sufficient to prove that
-				# May end up being inadequate for extremely challenging puzzles (untested)
-				return 1
+		change = False
 
 		# Loop to check basic conditions starting from top left of map to bottom right
 		for row in range(9):
@@ -73,13 +69,13 @@ def mainloop(my_map, recursed=False):
 						# it is discarded from allowed values of the point
 						if my_map.CrossCheck(value, row, column):
 							my_map.solved += my_map.rows[row][column].Pop(value) #Pop() returns 1 if the point is now fixed
-
+							change = True
 						# If the value can not be anywhere else in the same row, column or grid (any one),
 						# it is fixed
 						elif my_map.OutCheck(value, row, column):
 							my_map.solved += 1
 							my_map.RemoveInstance(value, row, column)
-
+							change = True
 							break
 
 	# If when puzzle is solved, it is in a guess check, returns -1 to withhold from further analysis
@@ -134,7 +130,7 @@ def guess(old_map):
 	elif mainreturn == 0:
 		old_map.solved += old_point.Pop(second) # Reject guess
 		old_map.RemoveInstance(first, row, column)
-	else:
+	else:#Never gonna happen now but still there
 		old_map.solved += old_point.Pop(first) # Accept guess
 		old_map.RemoveInstance(second, row, column)
 
