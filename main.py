@@ -43,9 +43,11 @@ def mainloop(my_map, recursed=False):
 		# The 4 can be changed to something higher or lower to improve efficiency
 		# the ideal number (trial and error and line 48) has not been figured out yet
 		if not change:
-			if recursed:
+			
 				if guess(my_map):
 					break
+			
+
 		change = False
 
 		# Loop to check basic conditions starting from top left of map to bottom right
