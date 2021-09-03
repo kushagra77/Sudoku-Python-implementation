@@ -19,16 +19,16 @@ def main():
 
 def mainloop(my_map, recursed=False):
 	
-	my_map.Print()
+	
 	count = 0
 	while my_map.solved < 81:
 		if my_map.Lost():
 			return False
 
 		count += 1
-		if count % 5 == 0:
+		if count % 5 == 0: # the 5 can be changed to something higher, 4 doesn't work in some cases, yet to determine
+							# ideal number
 			if not recursed:
-				my_map.Print()
 				guess(my_map)
 			else:
 				return True
@@ -49,7 +49,7 @@ def mainloop(my_map, recursed=False):
 	if recursed:
 		return True
 	my_map.Print()
-	print(count)
+	print("No. of iterations:", count)
 	
 	
 def guess(old_map):
@@ -75,7 +75,7 @@ def guess(old_map):
 	if not mainloop(my_map, True):
 		
 		old_map.solved += old_point.Pop(second)
-		old_map.Print()
+		
 		old_map.RemoveInstance(first, row, column)
 	else:
 		old_map.solved += old_point.Pop(first)
