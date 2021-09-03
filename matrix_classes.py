@@ -11,7 +11,7 @@ class Point():
             self.values = set()
         self.value = value
 
-    # ToDo: CHANGE POP TO REMOVE
+    # Removes value from values and returns 1 if point is now fixed
     def Pop(self, value):
         # Remove value for values set
         self.values.discard(value)
@@ -40,6 +40,8 @@ class Grid():
             return 1
         return 0
     
+    # Removes the possibility of value from every point in the grid
+    # returns how many more points are now fixed
     def Rectify(self, value):
         
         count = 0
@@ -58,6 +60,7 @@ class Grid():
                     return True
         return False
 
+    # Returns True if the game is Lost due to repition in this grid
     def Lost(self):
         values = []
         for row in self.map:
@@ -68,6 +71,7 @@ class Grid():
             return True
         return False
 
+    # If every other point in grid can't have value this returns True, otherwise False
     def OutCheck(self, value, row, column):
         
         for i in range(3):
@@ -103,12 +107,11 @@ class Map():
             if value == i.value:
                 return True
 
-        
         return self.map[row // 3][column // 3].Contains(value)
 
             
 
-    
+    # Print out map fancily(for solution)
     def Print(self):
         print("|-----------------------|")
         for i in range(9):
@@ -121,6 +124,8 @@ class Map():
             if i % 3 == 2:
                 print("|-----------------------|")
 
+    # Removes the possibility of value from every point in row and column and grid
+    # Increments self.solve for any new points now fixed
     def RemoveInstance(self, value, row, column):
         for point in self.rows[row]:
             self.solved += point.Pop(value)
@@ -130,20 +135,26 @@ class Map():
                 
         self.solved += self.map[row // 3][column // 3].Rectify(value)
 
+    # Returns True if a value is not in possible values of any point in row
     def RowCheck(self, value, row):
         for i in range(9):
             if i != row and value in self.rows[row][i].values:
                 return False
         return True
 
+    # Returns True if a value is not in possible values of any point in column
     def ColumnCheck(self, value, column):
         for i in range(9):
             if i != column and value in self.columns[column][i].values:
                 return False
         return True
         
+    # Calls functions to check if a value can be fixed at row,column of map
+    # Returns True if it can
     def OutCheck(self, value, row, column):
-        point = self.map[row//3][column//3].map[row%3][column%3]
+        point = self.map[row//3][column//3].map[row%3][column%3] 
+
+        # Condition checking if value is possible anywhere in row and column and grid
         condition = self.RowCheck(value, row) or self.ColumnCheck(value, column)
         condition = condition or self.map[row//3][column//3].OutCheck(value, row%3, column%3)
 
@@ -154,17 +165,20 @@ class Map():
             return True
         return False
 
+    # Check if game is Lost, for wrong guesses
     def Lost(self):
         for i in range(9):
-            row = [j.value for j in self.rows[i] if j.fixed]
-            
+
+            row = [j.value for j in self.rows[i] if j.fixed]            
             if len(row) > len(set(row)):
-                return True
-            column = [j.value for j in self.columns[i] if j.fixed]
-            
+                return True # since row repetition
+
+            column = [j.value for j in self.columns[i] if j.fixed]            
             if len(column) > len(set(column)):
-                return True
+                return True # since column repetition
+
             if self.map[i//3][i%3].Lost():
-                return True
-        return False
+                return True #since grid repetition
+
+        return False # not lost
                 
